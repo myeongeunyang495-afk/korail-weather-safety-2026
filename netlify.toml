@@ -1,0 +1,23 @@
+﻿# 코레일 작업현장 AI 기상정보 대응시스템 — Netlify 배포 설정
+# 정적 프론트(dist) + 서버리스 함수(netlify/functions)
+# 실데이터 연동에 필요한 환경변수(Netlify UI에서 설정, 코드에 커밋 금지):
+#   KMA_SERVICE_KEY   기상청 공공데이터포털 서비스키
+#   KAKAO_REST_KEY    Kakao Local REST 키
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
