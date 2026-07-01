@@ -23,7 +23,7 @@ export function ShareSheet({ reading, onClose }: Props) {
   const doShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title: "코레일 체감온도 안전", text: summary, url });
+        await navigator.share({ title: "코레일 체감온도 안전", text: summary });
         return;
       } catch {
         /* 취소 시 폴백 */

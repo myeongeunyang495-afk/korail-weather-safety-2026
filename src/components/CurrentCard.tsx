@@ -177,8 +177,6 @@ export function CurrentCard({ reading, hourly, loading, error, onGps, onToggleFa
 
       {reading && meta && (
         <>
-          <WeatherFocus reading={reading} hourly={hourly} onOpenSafety={onOpenSafety} onOpenForecast={onOpenForecast} />
-
           <div className="current__hero">
             {isSnow ? <SnowFlake color={meta.color} /> : isRain ? <RainDrop color={meta.color} /> : <Thermometer color={meta.color} feelsLikeC={reading.feelsLikeC} />}
             <div className="current__big">
@@ -201,6 +199,8 @@ export function CurrentCard({ reading, hourly, loading, error, onGps, onToggleFa
             <b>{meta.label}</b>
             <span className="stagechip__th">{meta.thresholdLabel}</span>
           </div>
+
+          <WeatherFocus reading={reading} hourly={hourly} onOpenSafety={onOpenSafety} onOpenForecast={onOpenForecast} />
 
           <dl className="current__grid">
             <div><dt>기온</dt><dd>{formatTemp(reading.tempC)}</dd></div>
