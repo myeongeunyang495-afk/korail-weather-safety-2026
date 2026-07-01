@@ -37,8 +37,8 @@ export function Onboarding({ onClose }: Props) {
           <li>
             <span className="ob__n">2</span>
             <div>
-              <b>단계별 조치 + 자동 기록</b>
-              <p>4단계 안전조치 팝업, ‘조치 완료’ 시 「체감온도 기록일지」 자동 저장.</p>
+              <b>단계별 안전조치 안내</b>
+              <p>위험 단계에 맞춘 4단계 안전조치 팝업으로 현장 대응을 안내.</p>
             </div>
           </li>
           <li>

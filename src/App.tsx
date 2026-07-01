@@ -4,34 +4,14 @@ import { CurrentCard } from "./components/CurrentCard";
 import { RegionPicker } from "./components/RegionPicker";
 import { FavoriteBar } from "./components/FavoriteBar";
 import { HourlyForecast } from "./components/HourlyForecast";
-import { RecordsView } from "./components/RecordsView";
 import { GuideView } from "./components/GuideView";
 import { StageModal } from "./components/StageModal";
 import { Onboarding } from "./components/Onboarding";
 import { BottomNav, type TabKey } from "./components/BottomNav";
 import { useReading } from "./hooks/useReading";
-import { useRecords } from "./hooks/useRecords";
 import { useFavorites } from "./hooks/useFavorites";
-import { makeRecordId, type FieldRecord } from "./lib/records";
 import type { Reading } from "./lib/reading";
 import type { HazardKind } from "./lib/stages";
-
-function recordFromReading(r: Reading, note?: string): FieldRecord {
-  const at = new Date();
-  return {
-    id: makeRecordId(at),
-    at: at.toISOString(),
-    location: r.location,
-    hazard: r.primaryHazard,
-    tempC: r.tempC,
-    humidityPct: r.humidityPct,
-    windMs: r.windMs,
-    feelsLikeC: r.feelsLikeC,
-    level: r.primaryLevel,
-    source: r.source,
-    note,
-  };
-}
 
 export default function App() {
   const [tab, setTab] = useState<TabKey>("home");
@@ -40,7 +20,6 @@ export default function App() {
   const [showOnboarding, setShowOnboarding] = useState(true);
 
   const { reading, hourly, loading, error, queryByCoords, queryByGps } = useReading();
-  const records = useRecords();
   const favorites = useFavorites();
 
   const booted = useRef(false);
@@ -58,14 +37,6 @@ export default function App() {
       if (!showOnboarding) setModalReading(reading);
     }
   }, [reading, showOnboarding]);
-
-  const onConfirmStage = useCallback(
-    (r: Reading) => {
-      if (r.primaryLevel !== "normal") records.add(recordFromReading(r));
-      setModalReading(null);
-    },
-    [records],
-  );
 
   const closeOnboarding = useCallback(() => {
     setShowOnboarding(false);
@@ -130,25 +101,16 @@ export default function App() {
             />
           )}
 
-          {tab === "records" && (
-            <RecordsView
-              records={records.records}
-              onExport={records.exportCsv}
-              onRemove={records.remove}
-              onClear={records.clear}
-            />
-          )}
-
           {tab === "safety" && <GuideView reading={reading} />}
         </main>
 
-        <BottomNav tab={tab} onTab={setTab} level={reading?.primaryLevel} recordCount={records.records.length} />
+        <BottomNav tab={tab} onTab={setTab} level={reading?.primaryLevel} />
       </div>
 
       {modalReading && (
         <StageModal
           reading={modalReading}
-          onConfirm={() => onConfirmStage(modalReading)}
+          onConfirm={() => setModalReading(null)}
           onClose={() => setModalReading(null)}
         />
       )}

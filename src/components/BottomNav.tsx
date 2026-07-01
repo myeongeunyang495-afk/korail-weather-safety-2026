@@ -1,12 +1,11 @@
 import type { StageLevel } from "../lib/stages";
 
-export type TabKey = "home" | "forecast" | "records" | "safety";
+export type TabKey = "home" | "forecast" | "safety";
 
 interface Props {
   tab: TabKey;
   onTab: (t: TabKey) => void;
   level?: StageLevel;
-  recordCount: number;
 }
 
 const ITEMS: { key: TabKey; label: string; icon: JSX.Element }[] = [
@@ -25,13 +24,6 @@ const ITEMS: { key: TabKey; label: string; icon: JSX.Element }[] = [
     ),
   },
   {
-    key: "records",
-    label: "기록일지",
-    icon: (
-      <path d="M7 4h8l4 4v12H7zM14 4v5h5M9.5 13h6M9.5 16.5h4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-    ),
-  },
-  {
     key: "safety",
     label: "안전가이드",
     icon: (
@@ -40,7 +32,7 @@ const ITEMS: { key: TabKey; label: string; icon: JSX.Element }[] = [
   },
 ];
 
-export function BottomNav({ tab, onTab, level, recordCount }: Props) {
+export function BottomNav({ tab, onTab, level }: Props) {
   return (
     <nav className="bnav" aria-label="주요 메뉴">
       {ITEMS.map((it) => (
@@ -54,11 +46,6 @@ export function BottomNav({ tab, onTab, level, recordCount }: Props) {
             <svg width="24" height="24" viewBox="0 0 24 24">{it.icon}</svg>
             {it.key === "home" && level && level !== "normal" && (
               <span className={`bnav__pulse stage-${level}`} aria-hidden="true" />
-            )}
-            {it.key === "records" && recordCount > 0 && (
-              <span className="bnav__count" aria-hidden="true">
-                {recordCount > 99 ? "99+" : recordCount}
-              </span>
             )}
           </span>
           <span className="bnav__label">{it.label}</span>

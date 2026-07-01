@@ -11,7 +11,6 @@ interface Props {
 
 export function StageModal({ reading, onConfirm, onClose }: Props) {
   const meta = getStageMeta(reading.primaryHazard, reading.primaryLevel);
-  const willRecord = reading.primaryLevel !== "normal";
   const isRain = reading.primaryHazard === "rain";
   const isSnow = reading.primaryHazard === "snow";
   const amountText = reading.rn1mm < 10 ? reading.rn1mm.toFixed(1) : String(Math.round(reading.rn1mm));
@@ -42,12 +41,6 @@ export function StageModal({ reading, onConfirm, onClose }: Props) {
             <li key={i}>{a}</li>
           ))}
         </ul>
-
-        {willRecord && (
-          <p className="modal__record">
-            조치 완료 시 <b>체감온도 기록일지</b>에 자동 저장됩니다.
-          </p>
-        )}
 
         <div className="modal__btns">
           <button className="btn btn--stage" onClick={onConfirm}>
